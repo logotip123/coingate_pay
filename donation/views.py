@@ -50,7 +50,10 @@ class Cancel(View):
 
 class Callback(View):
     def post(self, request):
-        payment = Payment.objects.filter(token=request.POST["token"]).first()
-        if payment:
-            payment.status = request.POST["status"][0]
-            payment.save()
+        if "token" in request.POST:
+            payment = Payment.objects.filter(token=request.POST["token"]).first()
+            if payment:
+                payment.status = request.POST["status"][0]
+                payment.save()
+                return 200
+        return 501
